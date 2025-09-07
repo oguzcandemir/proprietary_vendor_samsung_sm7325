@@ -24,27 +24,6 @@ jobs:
           - model: "SM-A528B"
             csc: "BRI"
             omc: "BRI"
-          - model: "SM-A528N"
-            csc: "SKC"
-            omc: "OKR"
-          - model: "SM-A736B"
-            csc: "ZTO"
-            omc: "OWO"
-          - model: "SM-A736B"
-            csc: "INS"
-            omc: "ODM"
-          - model: "SM-M526B"
-            csc: "INS"
-            omc: "ODM"
-          - model: "SM-M526BR"
-            csc: "BTU"
-            omc: "OXM"
-          - model: "SM-M526B"
-            csc: "ZTO"
-            omc: "OWO"
-          - model: "SM-M526BR"
-            csc: "TUR"
-            omc: "OJM"
 
     steps:
       - name: Checkout repo
@@ -101,12 +80,6 @@ jobs:
         run: |
           if [[ "${{ matrix.model }}" == "SM-A528B" ]]; then
               imei="352599501234566"
-          elif [[ "${{ matrix.model }}" == "SM-A528N" ]]; then
-              imei="354049881234560"
-          elif [[ "${{ matrix.model }}" == "SM-A736B" ]]; then
-              imei="352828291234563"
-          elif [[ "${{ matrix.model }}" == "SM-M526B" ]]; then
-              imei="358205231234561"
           else
               imei="355568761234563"
           fi
@@ -198,13 +171,13 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           tags: true
-          github_token: ${{ secrets.TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload release assets
         if: env.need_update == 1
         uses: softprops/action-gh-release@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           body_path: versions.txt
           tag_name: "${{ env.latest_shortversion }}_${{ matrix.omc }}"
